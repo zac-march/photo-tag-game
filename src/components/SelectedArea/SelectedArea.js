@@ -4,15 +4,18 @@ import React, { useState, useEffect } from "react";
 function SelectedArea(props) {
   const { pos, selectSize, chars, handleCharSelect } = props;
 
-  let btns = [];
-  for (const char in chars) {
-    btns.push(
-      <button onClick={() => handleCharSelect(char)}>
-        <img alt={`${char}`} src={chars[char].img} />
-        {char}
-      </button>
-    );
-  }
+  const charBtns = () => {
+    let btns = [];
+    for (const char in chars) {
+      btns.push(
+        <button onClick={() => handleCharSelect(char)}>
+          <img alt={`${char}`} src={chars[char].img} />
+          {char}
+        </button>
+      );
+    }
+    return btns;
+  };
 
   const areaBorder = (pos) => {
     return (
@@ -35,7 +38,7 @@ function SelectedArea(props) {
         className={style.charButtons}
         style={{ left: pos.x + selectSize / 2, top: pos.y - selectSize / 2 }}
       >
-        {btns}
+        {charBtns()}
       </div>
     </div>
   );
