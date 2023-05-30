@@ -1,1 +1,16 @@
+.App {
+  height: 100vh;
+}
 
+.game {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game > img {
+  display: block;
+  width: 100%;
+  object-fit: fill;
+}
