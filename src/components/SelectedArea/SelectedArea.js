@@ -6,7 +6,12 @@ function SelectedArea(props) {
 
   let btns = [];
   for (const char in chars) {
-    btns.push(<button onClick={() => handleCharSelect(char)}>{char}</button>);
+    btns.push(
+      <button onClick={() => handleCharSelect(char)}>
+        <img alt={`${char}`} src={chars[char].img} />
+        {char}
+      </button>
+    );
   }
 
   const areaBorder = (pos) => {

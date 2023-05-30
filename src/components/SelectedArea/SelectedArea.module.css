@@ -17,6 +17,9 @@
   font-size: 1rem;
   transition: all 0.15s ease-in-out;
   padding: 0.8rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .charButtons button:hover {
@@ -33,6 +36,12 @@
 .charButtons button:last-child {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.charButtons button img {
+  display: block;
+  width: 2rem;
+  height: 2rem;
 }
 
 .areaBorder {
