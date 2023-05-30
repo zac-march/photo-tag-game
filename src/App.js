@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import waldoImage from "./resources/whereiswaldo.jpg";
-
-function debounce(fn, ms) {
-  let timer;
-  return (_) => {
-    clearTimeout(timer);
-    timer = setTimeout((_) => {
-      timer = null;
-      fn.apply(this, arguments);
-    }, ms);
-  };
-}
+import debounce from "./utils/debounce";
 
 function App() {
   const [areaPos, setAreaPos] = useState();
