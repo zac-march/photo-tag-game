@@ -16,7 +16,7 @@ const CHARS = {
   },
 };
 
-const SELECT_SIZE = 25;
+const SELECT_SIZE = 40;
 
 function App() {
   const [areaPos, setAreaPos] = useState();
@@ -39,6 +39,11 @@ function App() {
     );
   }
 
+  function handleCharSelect(char) {
+    if (char === selectedChar) console.log("You found" + char);
+    setSelectedArea();
+  }
+
   function updateAreaElement() {
     if (areaPos === undefined) return;
     const image = document.querySelector("#waldo");
@@ -49,7 +54,12 @@ function App() {
       y: imgHeight * areaPos.y,
     };
     setSelectedArea(
-      <SelectedArea pos={imgPos} selectSize={SELECT_SIZE} chars={CHARS} />
+      <SelectedArea
+        pos={imgPos}
+        selectSize={SELECT_SIZE}
+        chars={CHARS}
+        handleCharSelect={handleCharSelect}
+      />
     );
   }
 
@@ -73,7 +83,6 @@ function App() {
 
   useEffect(() => {
     const debouncedHandleResize = debounce(updateAreaElement, 10);
-
     window.addEventListener("resize", debouncedHandleResize);
 
     return () => {
