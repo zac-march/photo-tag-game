@@ -3,6 +3,8 @@
 }
 
 .game {
+  box-sizing: border-box;
+  padding: 1rem;
   width: 100%;
   display: flex;
   justify-content: center;
