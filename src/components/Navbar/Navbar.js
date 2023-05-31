@@ -1,5 +1,5 @@
 import style from "./Navbar.module.css";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 function Navbar({ chars, foundChars }) {
   return (
@@ -17,7 +17,12 @@ function Navbar({ chars, foundChars }) {
           );
         })}
       </div>
-      <div>GITHUB</div>
+
+      <h1 className={style.title}>Where's Waldo?</h1>
+
+      <a target="_blank" href="./" className={style.buttonLink}>
+        <h4>Leaderboard</h4>
+      </a>
     </div>
   );
 }
