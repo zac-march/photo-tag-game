@@ -28,6 +28,7 @@ function App() {
   const [areaPos, setAreaPos] = useState();
   const [selectedArea, setSelectedArea] = useState();
   const [selectedChar, setSelectedChar] = useState();
+  const [foundChars, setFoundChars] = useState([]);
 
   function handleImageClick(e) {
     const image = document.querySelector("#waldo");
@@ -38,7 +39,7 @@ function App() {
 
     setSelectedChar(
       getClickedChar(
-        { x: e.pageX, y: e.pageY },
+        { x: e.pageX - image.x, y: e.pageY - image.y },
         image.offsetWidth,
         image.offsetHeight
       )
@@ -46,7 +47,10 @@ function App() {
   }
 
   function handleCharSelect(char) {
-    if (char === selectedChar) console.log("You found" + char);
+    if (char === selectedChar && !foundChars.some((fChar) => fChar === char)) {
+      setFoundChars((prev) => [...prev, char]);
+      console.log("You found" + char);
+    }
     setSelectedArea();
   }
 
@@ -97,6 +101,10 @@ function App() {
   });
 
   useEffect(() => {
+    console.log("foundChars:", foundChars);
+  }, [foundChars]);
+
+  useEffect(() => {
     updateAreaElement();
   }, [areaPos]);
 
@@ -106,7 +114,7 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      <Navbar chars={CHARS} foundChars={foundChars} />
       <div className="game">
         {selectedArea && selectedArea}
         <img
