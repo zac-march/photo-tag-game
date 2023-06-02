@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import waldoBgImage from "./resources/whereiswaldo.jpg";
-import debounce from "./utils/debounce";
 import SelectedArea from "./components/SelectedArea/SelectedArea";
 import Navbar from "./components/Navbar/Navbar";
 import odlawImage from "./resources/odlaw.jpg";
@@ -31,19 +30,9 @@ function App() {
   const [foundChars, setFoundChars] = useState([]);
 
   function handleImageClick(e) {
-    const image = document.querySelector("#waldo");
-    setAreaPos({
-      x: e.pageX / image.offsetWidth,
-      y: e.pageY / image.offsetHeight,
-    });
-
-    setSelectedChar(
-      getClickedChar(
-        { x: e.pageX - image.x, y: e.pageY - image.y },
-        image.offsetWidth,
-        image.offsetHeight
-      )
-    );
+    const selectPos = { x: e.pageX, y: e.pageY };
+    setAreaPos(selectPos);
+    setSelectedChar(getClickedChar(selectPos));
   }
 
   function handleCharSelect(char) {
@@ -56,16 +45,9 @@ function App() {
 
   function updateAreaElement() {
     if (areaPos === undefined) return;
-    const image = document.querySelector("#waldo");
-    const imgWidth = image.offsetWidth;
-    const imgHeight = image.offsetHeight;
-    const imgPos = {
-      x: imgWidth * areaPos.x,
-      y: imgHeight * areaPos.y,
-    };
     setSelectedArea(
       <SelectedArea
-        pos={imgPos}
+        pos={areaPos}
         selectSize={SELECT_SIZE}
         chars={CHARS}
         handleCharSelect={handleCharSelect}
@@ -73,17 +55,18 @@ function App() {
     );
   }
 
-  function getClickedChar(imgPos, imgWidth, imgHeight) {
+  function getClickedChar(selectPos) {
+    const image = document.querySelector("#waldo");
     for (const char in CHARS) {
       const cPos = {
-        x: CHARS[char].x * imgWidth,
-        y: CHARS[char].y * imgHeight,
+        x: CHARS[char].x * image.offsetWidth + image.offsetLeft,
+        y: CHARS[char].y * image.offsetHeight + image.offsetTop,
       };
       if (
-        imgPos.x >= cPos.x - SELECT_SIZE &&
-        imgPos.x <= cPos.x + SELECT_SIZE &&
-        imgPos.y >= cPos.y - SELECT_SIZE &&
-        imgPos.y <= cPos.y + SELECT_SIZE
+        selectPos.x >= cPos.x - SELECT_SIZE &&
+        selectPos.x <= cPos.x + SELECT_SIZE &&
+        selectPos.y >= cPos.y - SELECT_SIZE &&
+        selectPos.y <= cPos.y + SELECT_SIZE
       ) {
         return char;
       }
@@ -92,25 +75,8 @@ function App() {
   }
 
   useEffect(() => {
-    const debouncedHandleResize = debounce(updateAreaElement, 10);
-    window.addEventListener("resize", debouncedHandleResize);
-
-    return () => {
-      window.removeEventListener("resize", debouncedHandleResize);
-    };
-  });
-
-  useEffect(() => {
-    console.log("foundChars:", foundChars);
-  }, [foundChars]);
-
-  useEffect(() => {
     updateAreaElement();
   }, [areaPos]);
-
-  useEffect(() => {
-    console.log(selectedChar);
-  }, [selectedChar]);
 
   return (
     <div className="App">
