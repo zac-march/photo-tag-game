@@ -1,0 +1,8 @@
+{
+  "name": "WheresWaldo",
+  "short_name": "WheresWaldo",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Where's Waldo for the Web"
+}
