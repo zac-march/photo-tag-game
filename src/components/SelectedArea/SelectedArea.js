@@ -1,24 +1,12 @@
 import style from "./SelectedArea.module.css";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import uniqid from "uniqid";
 
 function SelectedArea(props) {
   const { pos, selectSize, chars, handleCharSelect } = props;
 
-  const charBtns = () => {
-    let btns = [];
-    for (const char in chars) {
-      btns.push(
-        <button onClick={() => handleCharSelect(char)}>
-          <img alt={`${char}`} src={chars[char].img} />
-          {char}
-        </button>
-      );
-    }
-    return btns;
-  };
-
-  const areaBorder = (pos) => {
-    return (
+  return (
+    <div className={style.container}>
       <div
         className={style.areaBorder}
         style={{
@@ -28,17 +16,18 @@ function SelectedArea(props) {
           top: pos.y - selectSize / 2,
         }}
       ></div>
-    );
-  };
-
-  return (
-    <div className={style.container}>
-      {areaBorder(pos)}
       <div
         className={style.charButtons}
         style={{ left: pos.x + selectSize / 2, top: pos.y - selectSize / 2 }}
       >
-        {charBtns()}
+        {Object.keys(chars).map((char) => {
+          return (
+            <button key={uniqid()} onClick={() => handleCharSelect(char)}>
+              <img alt={`${char}`} src={chars[char].img} />
+              {char}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

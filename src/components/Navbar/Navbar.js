@@ -1,5 +1,6 @@
 import style from "./Navbar.module.css";
 import React from "react";
+import uniqid from "uniqid";
 
 function Navbar({ chars, foundChars }) {
   return (
@@ -8,6 +9,7 @@ function Navbar({ chars, foundChars }) {
         {Object.keys(chars).map((char) => {
           return (
             <div
+              key={uniqid()}
               className={
                 foundChars.some((fChar) => fChar === char) ? style.found : ""
               }
