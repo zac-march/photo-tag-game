@@ -24,39 +24,36 @@ const CHARS = {
 const SELECT_SIZE = 40;
 
 function App() {
-  const [areaPos, setAreaPos] = useState();
-  const [selectedArea, setSelectedArea] = useState();
+  const [selectedAreaEl, setSelectedAreaEl] = useState();
+  const [clickedChar, setClickedChar] = useState();
   const [selectedChar, setSelectedChar] = useState();
   const [foundChars, setFoundChars] = useState([]);
 
   function handleImageClick(e) {
     const selectPos = { x: e.pageX, y: e.pageY };
-    setAreaPos(selectPos);
-    setSelectedChar(getClickedChar(selectPos));
-  }
-
-  function handleCharSelect(char) {
-    if (char === selectedChar && !foundChars.some((fChar) => fChar === char)) {
-      setFoundChars((prev) => [...prev, char]);
-      console.log("You found" + char);
-    }
-    setSelectedArea();
-  }
-
-  function updateAreaElement() {
-    if (areaPos === undefined) return;
-    setSelectedArea(
+    setClickedChar(getClickedChar(selectPos));
+    setSelectedAreaEl(
       <SelectedArea
-        pos={areaPos}
+        pos={selectPos}
         selectSize={SELECT_SIZE}
         chars={CHARS}
-        handleCharSelect={handleCharSelect}
+        handleCharSelect={(char) => setSelectedChar(char)}
       />
     );
   }
+  useEffect(() => {
+    if (
+      selectedChar === clickedChar &&
+      !foundChars.some((fChar) => fChar === selectedChar)
+    ) {
+      setFoundChars((prev) => [...prev, selectedChar]);
+    }
+    setSelectedAreaEl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChar]);
 
   function getClickedChar(selectPos) {
-    const image = document.querySelector("#waldo");
+    const image = document.querySelector("#waldoImage");
     for (const char in CHARS) {
       const cPos = {
         x: CHARS[char].x * image.offsetWidth + image.offsetLeft,
@@ -74,17 +71,13 @@ function App() {
     return null;
   }
 
-  useEffect(() => {
-    updateAreaElement();
-  }, [areaPos]);
-
   return (
     <div className="App">
       <Navbar chars={CHARS} foundChars={foundChars} />
       <div className="game">
-        {selectedArea && selectedArea}
+        {selectedAreaEl && selectedAreaEl}
         <img
-          id="waldo"
+          id="waldoImage"
           alt="Where is waldo"
           onClick={handleImageClick}
           src={waldoBgImage}
