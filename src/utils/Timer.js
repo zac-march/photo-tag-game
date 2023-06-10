@@ -9,7 +9,7 @@ class Timer {
   }
 
   getTime() {
-    return this.tens;
+    return this.tens / 100;
   }
 
   start() {

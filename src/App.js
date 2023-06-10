@@ -8,6 +8,7 @@ import { initializeApp } from "firebase/app";
 import getFirebaseConfig from "./utils/getFirebaseConfig";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
+import SubmitScore from "./components/SubmitScore/SubmitScore";
 
 const app = initializeApp(getFirebaseConfig());
 const db = getFirestore(app);
@@ -99,6 +100,7 @@ function App() {
     <div className="App">
       {chars && (
         <>
+          {isGameOver && <SubmitScore time={timer.getTime()} db={db} />}
           <Navbar chars={chars} foundChars={foundChars} />
           <div className="game">
             {selectedAreaEl && selectedAreaEl}
