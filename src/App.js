@@ -3,9 +3,7 @@ import "./App.css";
 import waldoBgImage from "./resources/whereiswaldo.jpg";
 import SelectedArea from "./components/SelectedArea/SelectedArea";
 import Navbar from "./components/Navbar/Navbar";
-import odlawImage from "./resources/odlaw.jpg";
-import waldoImage from "./resources/waldo.jpg";
-import wizardImage from "./resources/wizard.jpeg";
+import Timer from "./utils/Timer";
 import { initializeApp } from "firebase/app";
 import getFirebaseConfig from "./utils/getFirebaseConfig";
 import { getFirestore } from "firebase/firestore";
@@ -16,12 +14,15 @@ const db = getFirestore(app);
 
 const SELECT_SIZE = 40;
 
+const timer = new Timer();
+
 function App() {
   const [selectedAreaEl, setSelectedAreaEl] = useState();
   const [clickedChar, setClickedChar] = useState();
   const [selectedChar, setSelectedChar] = useState();
   const [foundChars, setFoundChars] = useState([]);
   const [chars, setChars] = useState();
+  const [isGameOver, setIsGameOver] = useState(false);
 
   async function getCharData() {
     const tempChars = {};
@@ -34,6 +35,7 @@ function App() {
 
   useEffect(() => {
     getCharData();
+    timer.start();
   }, []);
 
   function handleImageClick(e) {
@@ -49,6 +51,7 @@ function App() {
     );
   }
   useEffect(() => {
+    if (!selectedChar) return;
     if (
       selectedChar === clickedChar &&
       !foundChars.some((fChar) => fChar === selectedChar)
@@ -58,6 +61,20 @@ function App() {
     setSelectedAreaEl();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChar]);
+
+  useEffect(() => {
+    if (!chars) return;
+    let hasFoundAllChars = Object.keys(chars)
+      .map((char) => foundChars.some((fChar) => char === fChar))
+      .every((val) => val === true);
+    console.log(hasFoundAllChars);
+
+    if (hasFoundAllChars) {
+      timer.stop();
+      console.log(timer.getTime());
+      setIsGameOver(true);
+    }
+  }, [foundChars]);
 
   function getClickedChar(selectPos) {
     const image = document.querySelector("#waldoImage");
