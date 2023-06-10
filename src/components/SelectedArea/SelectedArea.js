@@ -23,7 +23,7 @@ function SelectedArea(props) {
         {Object.keys(chars).map((char) => {
           return (
             <button key={uniqid()} onClick={() => handleCharSelect(char)}>
-              <img alt={`${char}`} src={chars[char].img} />
+              <img alt={`${char}`} src={chars[char].imgURL} />
               {char}
             </button>
           );

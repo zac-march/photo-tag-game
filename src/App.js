@@ -6,20 +6,13 @@ import Navbar from "./components/Navbar/Navbar";
 import odlawImage from "./resources/odlaw.jpg";
 import waldoImage from "./resources/waldo.jpg";
 import wizardImage from "./resources/wizard.jpeg";
+import { initializeApp } from "firebase/app";
+import getFirebaseConfig from "./utils/getFirebaseConfig";
+import { getFirestore } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
-const CHARS = {
-  WIZARD: { x: 0.6142292490118577, y: 0.8609355246523388, img: wizardImage },
-  ODLAW: {
-    x: 0.6015810276679842,
-    y: 0.640960809102402,
-    img: odlawImage,
-  },
-  WALDO: {
-    x: 0.27735368956743,
-    y: 0.32926829268292684,
-    img: waldoImage,
-  },
-};
+const app = initializeApp(getFirebaseConfig());
+const db = getFirestore(app);
 
 const SELECT_SIZE = 40;
 
@@ -28,6 +21,20 @@ function App() {
   const [clickedChar, setClickedChar] = useState();
   const [selectedChar, setSelectedChar] = useState();
   const [foundChars, setFoundChars] = useState([]);
+  const [chars, setChars] = useState();
+
+  async function getCharData() {
+    const tempChars = {};
+    const querySnapshot = await getDocs(collection(db, "Characters"));
+    querySnapshot.forEach((doc) => {
+      tempChars[doc.id] = doc.data();
+    });
+    setChars(tempChars);
+  }
+
+  useEffect(() => {
+    getCharData();
+  }, []);
 
   function handleImageClick(e) {
     const selectPos = { x: e.pageX, y: e.pageY };
@@ -36,7 +43,7 @@ function App() {
       <SelectedArea
         pos={selectPos}
         selectSize={SELECT_SIZE}
-        chars={CHARS}
+        chars={chars}
         handleCharSelect={(char) => setSelectedChar(char)}
       />
     );
@@ -54,10 +61,10 @@ function App() {
 
   function getClickedChar(selectPos) {
     const image = document.querySelector("#waldoImage");
-    for (const char in CHARS) {
+    for (const char in chars) {
       const cPos = {
-        x: CHARS[char].x * image.offsetWidth + image.offsetLeft,
-        y: CHARS[char].y * image.offsetHeight + image.offsetTop,
+        x: chars[char].x * image.offsetWidth + image.offsetLeft,
+        y: chars[char].y * image.offsetHeight + image.offsetTop,
       };
       if (
         selectPos.x >= cPos.x - SELECT_SIZE &&
@@ -73,16 +80,20 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar chars={CHARS} foundChars={foundChars} />
-      <div className="game">
-        {selectedAreaEl && selectedAreaEl}
-        <img
-          id="waldoImage"
-          alt="Where is waldo"
-          onClick={handleImageClick}
-          src={waldoBgImage}
-        />
-      </div>
+      {chars && (
+        <>
+          <Navbar chars={chars} foundChars={foundChars} />
+          <div className="game">
+            {selectedAreaEl && selectedAreaEl}
+            <img
+              id="waldoImage"
+              alt="Where is waldo"
+              onClick={handleImageClick}
+              src={waldoBgImage}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

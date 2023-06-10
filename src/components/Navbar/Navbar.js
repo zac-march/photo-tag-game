@@ -14,7 +14,7 @@ function Navbar({ chars, foundChars }) {
                 foundChars.some((fChar) => fChar === char) ? style.found : ""
               }
             >
-              <img alt={`${char}`} src={chars[char].img} /> <h4>{char}</h4>
+              <img alt={`${char}`} src={chars[char].imgURL} /> <h4>{char}</h4>
             </div>
           );
         })}
