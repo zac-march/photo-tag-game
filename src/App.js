@@ -78,6 +78,7 @@ function App() {
       console.log(timer.getTime());
       setIsGameOver(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foundChars]);
 
   function getClickedChar(selectPos) {
