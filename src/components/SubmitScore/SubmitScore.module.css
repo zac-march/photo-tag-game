@@ -9,8 +9,33 @@
   align-items: center;
 }
 
-.form {
+.container h2,
+.container h5 {
+  margin: 0;
+}
+
+.wrapper {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.form > input {
+  height: max-content;
+  width: 50%;
+  font-size: 1.5rem;
+}
+
+.form > button {
+  font-size: 1rem;
 }

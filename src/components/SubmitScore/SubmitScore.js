@@ -20,14 +20,16 @@ function SubmitScore({ time, db }) {
 
   return (
     <div className={style.container}>
-      <form className={style.form}>
+      <div class={style.wrapper}>
         <h2>You finished in {time} seconds!</h2>
         <p>Enter your name and submit your score to the leaderboard!</p>
-        <input value={nameValue} onChange={handleInputChange} />
-        <button onClick={handleSubmit} type="button">
-          Submit
-        </button>
-      </form>
+        <form className={style.form}>
+          <input value={nameValue} onChange={handleInputChange} />
+          <button onClick={handleSubmit} type="button" className="buttonLink">
+            <h5>Submit</h5>
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
