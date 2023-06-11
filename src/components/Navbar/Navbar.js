@@ -2,7 +2,7 @@ import style from "./Navbar.module.css";
 import React from "react";
 import uniqid from "uniqid";
 
-function Navbar({ chars, foundChars }) {
+function Navbar({ chars, foundChars, setShowLeaderboard }) {
   return (
     <div className={style.container}>
       <div className={style.charIcons}>
@@ -22,9 +22,9 @@ function Navbar({ chars, foundChars }) {
 
       <h1 className={style.title}>Where's Waldo?</h1>
 
-      <a target="_blank" href="./" className={style.buttonLink}>
+      <button onClick={() => setShowLeaderboard(true)} className="buttonLink">
         <h4>Leaderboard</h4>
-      </a>
+      </button>
     </div>
   );
 }

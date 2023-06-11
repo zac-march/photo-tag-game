@@ -46,29 +46,6 @@
   background: rgba(255, 255, 255, 0.7);
 }
 
-.buttonLink {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  background-color: #e42c29bf;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-  border-radius: 10px;
-  border: none;
-  text-decoration: none;
-  padding: 0.8rem;
-  color: white;
-  gap: 0.5rem;
-  transition: all 0.1s ease-in;
-}
-.buttonLink:hover {
-  transform: scale(1.015);
-  background-color: #e42c29e2;
-}
-
-.buttonLink h4 {
-  font-size: 1.2rem;
-}
-
 .title {
   margin: 0;
 }

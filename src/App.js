@@ -9,6 +9,7 @@ import getFirebaseConfig from "./utils/getFirebaseConfig";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 import SubmitScore from "./components/SubmitScore/SubmitScore";
+import Leaderboard from "./components/Leaderboard/Leaderboard";
 
 const app = initializeApp(getFirebaseConfig());
 const db = getFirestore(app);
@@ -24,6 +25,7 @@ function App() {
   const [foundChars, setFoundChars] = useState([]);
   const [chars, setChars] = useState();
   const [isGameOver, setIsGameOver] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   async function getCharData() {
     const tempChars = {};
@@ -51,6 +53,7 @@ function App() {
       />
     );
   }
+
   useEffect(() => {
     if (!selectedChar) return;
     if (
@@ -101,7 +104,12 @@ function App() {
       {chars && (
         <>
           {isGameOver && <SubmitScore time={timer.getTime()} db={db} />}
-          <Navbar chars={chars} foundChars={foundChars} />
+          {showLeaderboard && <Leaderboard db={db} />}
+          <Navbar
+            chars={chars}
+            foundChars={foundChars}
+            setShowLeaderboard={setShowLeaderboard}
+          />
           <div className="game">
             {selectedAreaEl && selectedAreaEl}
             <img
